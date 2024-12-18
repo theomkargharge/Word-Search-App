@@ -39,6 +39,7 @@ class AddTextGridWidget extends StatelessWidget {
                     border: Border.all(color: primaryColor),
                     borderRadius: BorderRadius.circular(20)),
                 child: TextField(
+                  focusNode: controller.focusNodes[index],
                   textCapitalization: TextCapitalization.characters,
                   maxLength: 1,
                   textAlign: TextAlign.center,
@@ -53,6 +54,7 @@ class AddTextGridWidget extends StatelessWidget {
                   onChanged: (value) {
                     if (value.isNotEmpty) {
                       controller.setGridValue(index, value);
+                      controller.updateGridValue(index, value);
                     }
                   },
                 ),

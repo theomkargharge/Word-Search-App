@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:search_app/utils/colors_constant.dart';
 
 class HomeScreenController extends GetxController {
+  final node = FocusScope.of(Get.context!);
   RxInt rows = 0.obs;
   RxInt columns = 0.obs;
 
@@ -16,13 +17,32 @@ class HomeScreenController extends GetxController {
 
   TextEditingController column = TextEditingController();
 
+  late List<FocusNode> focusNodes; // Focus nodes for each TextField
+
   void initializeGrid(int m, int n) {
     rows.value = m;
     columns.value = n;
     grid.value = List.filled(m * n, '');
+    focusNodes =
+        List.generate(m * n, (index) => FocusNode()); // Create focus nodes
+
     matchIndices.clear();
     update();
   }
+
+    // Update the grid value at the given index
+  void updateGridValue(int index, String value) {
+    if (value.isNotEmpty) {
+      grid[index] = value[0]; // Take only the first character
+      update();
+
+      // Move to the next TextField if it exists
+      if (index + 1 < focusNodes.length) {
+        focusNodes[index + 1].requestFocus();
+      }
+    }
+  }
+
 
   void setGridValue(int index, String value) {
     grid[index] = value.toUpperCase();
